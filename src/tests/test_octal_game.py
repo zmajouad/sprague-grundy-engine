@@ -50,15 +50,9 @@ def test_octal_moves_split():
     assert set(result) == {(1, 2)}
 
 def test_octal_moves_ignores_other_heaps():
-    decoded = [None, {"take_all": True, "reduce": False, "split": False}]
-    result = octal_moves((1, 2), decoded)
-    assert set(result) == {(2,)}  # heap 0 (size 5) untouched since take_all needs i==5, only i=1..5 checked; think about this one yourself actually
-
-    
-'''
-def test_octal_moves_leaves_other_heaps_untouched():
-    # position (5, 2) - moving on heap 0 shouldn't affect heap 1
-    decoded = [None, {"take_all": True, "reduce": False, "split": False}]
-    result = octal_moves((5, 2), decoded)
-    # every result tuple should still contain a "2" somewhere
-'''
+    decoded = [ # this would be 0.1
+        None, # index 0 unused
+        {"take_all": True, "reduce": False, "split": False} # when removing 1, can only take_all
+    ]
+    result = octal_moves((1, 2), decoded) # cannot use take_all on 2, meaning it is left
+    assert set(result) == {(2,)}
