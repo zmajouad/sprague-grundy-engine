@@ -23,6 +23,6 @@ def test_find_periodicity_one_repeat():
     assert result == {"is_periodic": True, "start": 0, "period": 4}
     
 def test_find_periodicity_non_periodic():
-    sequence = [1, 2, 3, 4, 5]
+    sequence = [1, 5, 7, 6, 2, 3, 1, 3]
     result = find_periodicity(sequence)
     assert result == {"is_periodic": False, "start": None, "period": None}
