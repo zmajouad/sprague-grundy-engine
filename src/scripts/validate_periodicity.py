@@ -4,7 +4,6 @@ from grundy_engine.grundy import grundy
 from grundy_engine.octal_game import octal_moves, generate_decoded_digits
 from grundy_engine.periodicity import find_periodicity, is_periodic_from
 
-'''
 
 # Dawson's Chess
 print("Dawson's Chess (0.137)")
@@ -82,7 +81,7 @@ print(f"Periodic: {result["is_periodic"]}\n",
       f"Start: {result["start"]}\n",
       f"Period: {result["period"]}")
 
-'''
+
 # Treblecross
 print("\nTreblecross (0.007)")
 decoded = generate_decoded_digits("0.007") #  code for Dawson's Kayles

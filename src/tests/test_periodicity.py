@@ -47,3 +47,9 @@ def test_find_periodicity_dawson_kayles():
     sequence = [0, 0, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 0, 5, 2, 2, 3, 3, 0, 1, 1, 3, 0, 2, 1, 1, 0, 4, 5, 2, 7, 4, 0, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 4, 5, 5, 2, 3, 3, 0, 1, 1, 3, 0, 2, 1, 1, 0, 4, 5, 3, 7, 4, 8, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 4, 5, 5, 9, 3, 3, 0, 1, 1, 3, 0, 2, 1, 1, 0, 4, 5, 3, 7, 4, 8, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 4, 5, 5, 9]
     result = find_periodicity(sequence)
     assert result == {"is_periodic": True, "start": 53, "period": 34}
+    
+def test_find_periodicity_treblecross():
+    # Treblecross is not periodic
+    sequence = [0, 0, 0, 1, 1, 1, 2, 2, 0, 3, 3, 1, 1, 1, 0, 4, 3, 3, 3, 2, 2, 2, 4, 4, 0, 5, 5, 2, 2, 2, 3, 3, 0, 5, 0, 1, 1, 1, 3, 3, 3, 5, 6, 4, 4, 1, 0, 5, 5, 6, 6, 2, 7, 7, 7, 8, 0, 1, 9, 2, 7, 2, 3, 3, 3, 9, 0, 5, 4, 4, 8, 6, 6, 2, 7, 1, 1, 1, 0, 5, 5, 9, 3, 1, 8, 2, 8, 5, 0, 1, 1, 12, 2, 2, 7, 3, 3, 9, 4, 4, 0]
+    result = find_periodicity(sequence)
+    assert result == {"is_periodic": False, "start": None, "period": None}
