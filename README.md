@@ -1,4 +1,4 @@
-# Sprague–Grundy Engine
+# Sprague-Grundy Engine
 
 I built this in Python to compute Grundy values for impartial games, starting with Nim and going up to octal games like Kayles and Dawson's Chess. Then I wrote a detector that looks for periodicity in the sequences I generated and checked everything I could against published results.
 
@@ -34,7 +34,7 @@ It was my first proper Git project, so the history is meant to show how it was b
 
 ## The theory
 
-**Sprague–Grundy.** In a finite game where both players have the same moves and the last player to move wins, every position has a Grundy value, and a position with value g plays like a Nim heap of size g. Value 0 means the player to move loses.
+**Sprague-Grundy.** In a finite game where both players have the same moves and the last player to move wins, every position has a Grundy value, and a position with value g plays like a Nim heap of size g. Value 0 means the player to move loses.
 
 if the value is 0, none of the positions you can move to has value 0, so every move gives your opponent a nonzero position. From a nonzero position the opponent can always move back to a 0. Eventually you run out of moves. If the value is nonzero, a 0 position is reachable, so you move there and win.
 
