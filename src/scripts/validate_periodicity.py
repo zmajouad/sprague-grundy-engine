@@ -4,6 +4,9 @@ from grundy_engine.grundy import grundy
 from grundy_engine.octal_game import octal_moves, generate_decoded_digits
 from grundy_engine.periodicity import find_periodicity, is_periodic_from
 
+# Sequences are precomputed and pasted in, Dawson’s Kayles is derived via a shift
+
+
 
 # Dawson's Chess
 print("Dawson's Chess (0.137)")
@@ -84,20 +87,19 @@ print(f"Periodic: {result["is_periodic"]}\n",
 
 # Treblecross
 print("\nTreblecross (0.007)")
-decoded = generate_decoded_digits("0.007") #  code for Dawson's Kayles
+decoded = generate_decoded_digits("0.007") #  code for Treblecross
 moves_fn = lambda pos: octal_moves(pos, decoded) # creates one-line lambda function which takes pos as an input and returns octal_moves(pos, decoded)
 sequence = []
 cache = {}
 start_time = time.time()
 
-# This loop takes too long to run
 
 for n in range(101):
     step_start = time.time()  
     sequence.append(grundy((n,), moves_fn, cache)) # Creates a sequence the exact length needed to detect periodicity
     print(f"n={n}, this step took {time.time() - step_start:.3f}s, total time = {time.time() - start_time:.2f}s")
     
-# sequence = [0, 0, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 0, 5, 2, 2, 3, 3, 0, 1, 1, 3, 0, 2, 1, 1, 0, 4, 5, 2, 7, 4, 0, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 4, 5, 5, 2, 3, 3, 0, 1, 1, 3, 0, 2, 1, 1, 0, 4, 5, 3, 7, 4, 8, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 4, 5, 5, 9, 3, 3, 0, 1, 1, 3, 0, 2, 1, 1, 0, 4, 5, 3, 7, 4, 8, 1, 1, 2, 0, 3, 1, 1, 0, 3, 3, 2, 2, 4, 4, 5, 5, 9]
+sequence = [0, 0, 0, 1, 1, 1, 2, 2, 0, 3, 3, 1, 1, 1, 0, 4, 3, 3, 3, 2, 2, 2, 4, 4, 0, 5, 5, 2, 2, 2, 3, 3, 0, 5, 0, 1, 1, 1, 3, 3, 3, 5, 6, 4, 4, 1, 0, 5, 5, 6, 6, 2, 7, 7, 7, 8, 0, 1, 9, 2, 7, 2, 3, 3, 3, 9, 0, 5, 4, 4, 8, 6, 6, 2, 7, 1, 1, 1, 0, 5, 5, 9, 3, 1, 8, 2, 8, 5, 0, 1, 1, 12, 2, 2, 7, 3, 3, 9, 4, 4, 0]
 
 print(sequence)
 print(f"Grundy sequence took {time.time() - start_time:.2f}s")
