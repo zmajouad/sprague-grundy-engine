@@ -36,7 +36,7 @@ print(f"Periodic: {result["is_periodic"]}\n",
 
 # Kayles
 print("\nKayles (0.77)")
-decoded = generate_decoded_digits("0.77") #  code for Dawson's Chess
+decoded = generate_decoded_digits("0.77") #  code for Kayles
 moves_fn = lambda pos: octal_moves(pos, decoded) # creates one-line lambda function which takes pos as an input and returns octal_moves(pos, decoded)
 sequence = []
 cache = {}

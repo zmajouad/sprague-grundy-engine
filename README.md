@@ -30,15 +30,15 @@ It was my first proper Git project, so the history is meant to show how it was b
 - **Wrong value cached.** My first memoised version stored an intermediate value inside the loop. It now stores the final mex once, after the loop.
 - **Range off by one.** I ran Dawson's Chess with `range(119)`, which stops at n = 118. The detector found nothing because it was one term short of two full periods. With the missing last term it found the period.
 - **False period at n = 64 for Treblecross.** The detector said period 1 because the last three values happened to be equal. Running to n = 100 removed it.
-- **Slow runs.** Computing each term with a new cache was very slow. Sharing one cache across the whole loop fixed most of that.
+- **Slow runs.** Sharing one cache across the loop helped. The main cause is that the engine searches the whole multi-heap game tree instead of using the XOR rule on separate heaps.
 
 ## The theory
 
 **Sprague-Grundy.** In a finite game where both players have the same moves and the last player to move wins, every position has a Grundy value, and a position with value g plays like a Nim heap of size g. Value 0 means the player to move loses.
 
-if the value is 0, none of the positions you can move to has value 0, so every move gives your opponent a nonzero position. From a nonzero position the opponent can always move back to a 0. Eventually you run out of moves. If the value is nonzero, a 0 position is reachable, so you move there and win.
+Why 0 means position is losing: if the value is 0, none of the positions you can move to has value 0, so every move gives your opponent a nonzero position. From a nonzero position the opponent can always move back to a 0. Eventually you run out of moves. If the value is nonzero, a 0 position is reachable, so you move there and win.
 
-**Why XOR.** If you play several games at once, each turn you move in just one of them. Each game acts like a Nim heap of its Grundy value, so the combined game acts like ordinary Nim. Nim is lost for the player that is going to move exactly when the XOR of the heap sizes is 0. So the Grundy value of the combined game is the XOR of the separate values. This means I can solve each game on its own and combine the answers, without searching the whole combined game tree.
+**Why XOR.** If you play several games at once, each turn you move in just one of them. Each game acts like a Nim heap of its Grundy value, so the combined game acts like ordinary Nim. Nim is lost for the player that is going to move exactly when the XOR of the heap sizes is 0. So the Grundy value of the combined game is the XOR of the separate values. This is what makes Grundy values useful: a sum of games can be solved from the values of its parts, without searching the combined game tree. My engine does not use this shortcut. It takes the mex over the whole multi-heap game tree, which gives the same answers but is much slower.
 
 I tested this on Dawson's Chess: the value of a two-heap position computed by mex over the whole tree equals the XOR of the two single-heap values.
 
@@ -63,6 +63,7 @@ Plots are in `results/`, with the periodic region shaded green.
 - **Largest heap computed from scratch:** n = 118 (Dawson's Chess). The last term in my stored Dawson's Chess sequence comes from the published values.
 - **The detector is weak near the end of a sequence.** It only needs one repeat of data after the start. The false period at n = 64 came from that. A longer sequence is stronger evidence.
 - **Runtime.** Split-heavy games get expensive fast. Dawson's Chess took about an hour to reach n = 119 and one run used over 16 GB of RAM. Kayles took about three hours to reach about n = 95. A Dawson's Kayles run was taking about 1000 seconds per term by n = 109 when I stopped it. The tests use stored sequences, so they run in seconds.
+- **Next step:** use the XOR rule inside the recursion so each heap is solved on its own. This would be far faster and would let me compute Dawson’s Kayles directly and go much further on Treblecross.
 
 ## Running it
 
