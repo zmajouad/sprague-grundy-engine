@@ -99,7 +99,7 @@ for n in range(101):
     sequence.append(grundy((n,), moves_fn, cache)) # Creates a sequence the exact length needed to detect periodicity
     print(f"n={n}, this step took {time.time() - step_start:.3f}s, total time = {time.time() - start_time:.2f}s")
     
-sequence = [0, 0, 0, 1, 1, 1, 2, 2, 0, 3, 3, 1, 1, 1, 0, 4, 3, 3, 3, 2, 2, 2, 4, 4, 0, 5, 5, 2, 2, 2, 3, 3, 0, 5, 0, 1, 1, 1, 3, 3, 3, 5, 6, 4, 4, 1, 0, 5, 5, 6, 6, 2, 7, 7, 7, 8, 0, 1, 9, 2, 7, 2, 3, 3, 3, 9, 0, 5, 4, 4, 8, 6, 6, 2, 7, 1, 1, 1, 0, 5, 5, 9, 3, 1, 8, 2, 8, 5, 0, 1, 1, 12, 2, 2, 7, 3, 3, 9, 4, 4, 0]
+# sequence = [0, 0, 0, 1, 1, 1, 2, 2, 0, 3, 3, 1, 1, 1, 0, 4, 3, 3, 3, 2, 2, 2, 4, 4, 0, 5, 5, 2, 2, 2, 3, 3, 0, 5, 0, 1, 1, 1, 3, 3, 3, 5, 6, 4, 4, 1, 0, 5, 5, 6, 6, 2, 7, 7, 7, 8, 0, 1, 9, 2, 7, 2, 3, 3, 3, 9, 0, 5, 4, 4, 8, 6, 6, 2, 7, 1, 1, 1, 0, 5, 5, 9, 3, 1, 8, 2, 8, 5, 0, 1, 1, 12, 2, 2, 7, 3, 3, 9, 4, 4, 0]
 
 print(sequence)
 print(f"Grundy sequence took {time.time() - start_time:.2f}s")
