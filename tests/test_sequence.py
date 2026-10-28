@@ -3,6 +3,9 @@ from grundy_engine.grundy import grundy
 from grundy_engine.nim import nim_moves
 from grundy_engine.octal_game import generate_decoded_digits, octal_moves
 
+from pathlib import Path
+DATA = Path(__file__).parent / "data"
+
 def generate_v1_sequences(code, length):
     decoded = generate_decoded_digits(code)
     moves_fn = lambda pos: octal_moves(pos, decoded) # creates one-line lambda function which takes pos as an input and returns octal_moves(pos, decoded)
@@ -26,3 +29,23 @@ def test_dawsons_kayles_sequence_matches_v1():
 
 def test_treblecross_sequence_matches_v1():
     assert octal_sequence("0.007", 11) == generate_v1_sequences("0.007", 11)
+
+def ttest_dawsons_chess_matches_oeis_a002187():
+    terms = []
+    with open(DATA / "a002187.txt") as f:
+        for line in f:
+            if line.startswith("#") or not line.strip():
+                continue
+            n, value = line.split()
+            terms.append(int(value))
+    assert octal_sequence("0.137", len(terms) - 1) == terms
+
+def test_dawsons_chess_matches_oeis_a002186():
+    terms = []
+    with open(DATA / "a002186.txt") as f:
+        for line in f:
+            if line.startswith("#") or not line.strip():
+                continue
+            n, value = line.split()
+            terms.append(int(value))
+    assert octal_sequence("0.77", len(terms) - 1) == terms
