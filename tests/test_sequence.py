@@ -30,7 +30,7 @@ def test_dawsons_kayles_sequence_matches_v1():
 def test_treblecross_sequence_matches_v1():
     assert octal_sequence("0.007", 11) == generate_v1_sequences("0.007", 11)
 
-def ttest_dawsons_chess_matches_oeis_a002187():
+def test_dawsons_chess_matches_oeis_a002187():
     terms = []
     with open(DATA / "a002187.txt") as f:
         for line in f:
@@ -40,7 +40,7 @@ def ttest_dawsons_chess_matches_oeis_a002187():
             terms.append(int(value))
     assert octal_sequence("0.137", len(terms) - 1) == terms
 
-def test_dawsons_chess_matches_oeis_a002186():
+def test_kayles_matches_oeis_a002186():
     terms = []
     with open(DATA / "a002186.txt") as f:
         for line in f:

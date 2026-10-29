@@ -18,5 +18,3 @@ def octal_sequence(code, N):
                     options.append(G[a] ^ G[remaining - a]) # XOR combines the values of the 2 heaps that can exist so mex only has to work with one heap
         G.append(mex(options))
     return G
-
-print(octal_sequence("0.137", 10))
