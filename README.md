@@ -10,10 +10,11 @@ It was my first proper Git project, so the history is meant to show how it was b
 - `src/grundy_engine/grundy.py`: one  `grundy(position, moves, cache)` that works for any game, because the game rules are passed in
 - `src/grundy_engine/nim.py`: moves for a single Nim heap (used as a sanity check, G(n) = n)
 - `src/grundy_engine/octal_game.py`: reads an octal code like `"0.137"` and generates every legal move
+- `src/grundy_engine/sequence.py`: v2, `octal_sequence(code, N)` computes G(0) to G(N) one heap size at a time using the XOR rule
 - `src/grundy_engine/periodicity.py`: finds the smallest period and the earliest start
 - `scripts/validate_periodicity.py`: computes the sequences and runs the detector
 - `scripts/plot_results.py`: draws the plots in `results/`
-- `tests/`: 30 pytest tests
+- `tests/`: 37 pytest tests
 
 ## How it works
 
@@ -30,7 +31,7 @@ It was my first proper Git project, so the history is meant to show how it was b
 - **Wrong value cached.** My first memoised version stored an intermediate value inside the loop. It now stores the final mex once, after the loop.
 - **Range off by one.** I ran Dawson's Chess with `range(119)`, which stops at n = 118. The detector found nothing because it was one term short of two full periods. With the missing last term it found the period.
 - **False period at n = 64 for Treblecross.** The detector said period 1 because the last three values happened to be equal. Running to n = 100 removed it.
-- **Slow runs.** Sharing one cache across the loop helped. The main cause is that the engine searches the whole multi-heap game tree instead of using the XOR rule on separate heaps.
+- **Slow runs.** Sharing one cache across the loop helped. The main cause was that v1 searched the whole multi-heap game tree instead of using the XOR rule on separate heaps. v2 fixes this.
 
 ## The theory
 
@@ -38,7 +39,7 @@ It was my first proper Git project, so the history is meant to show how it was b
 
 Why 0 means position is losing: if the value is 0, none of the positions you can move to has value 0, so every move gives your opponent a nonzero position. From a nonzero position the opponent can always move back to a 0. Eventually you run out of moves. If the value is nonzero, a 0 position is reachable, so you move there and win.
 
-**Why XOR.** If you play several games at once, each turn you move in just one of them. Each game acts like a Nim heap of its Grundy value, so the combined game acts like ordinary Nim. Nim is lost for the player that is going to move exactly when the XOR of the heap sizes is 0. So the Grundy value of the combined game is the XOR of the separate values. This is what makes Grundy values useful: a sum of games can be solved from the values of its parts, without searching the combined game tree. My engine does not use this shortcut. It takes the mex over the whole multi-heap game tree, which gives the same answers but is much slower.
+**Why XOR.** If you play several games at once, each turn you move in just one of them. Each game acts like a Nim heap of its Grundy value, so the combined game acts like ordinary Nim. Nim is lost for the player that is going to move exactly when the XOR of the heap sizes is 0. So the Grundy value of the combined game is the XOR of the separate values. This is what makes Grundy values useful: a sum of games can be solved from the values of its parts, without searching the combined game tree. The first version searched the whole multi-heap tree, but v2 uses the XOR rule, going through one heap size at a time.
 
 I tested this on Dawson's Chess: the value of a two-heap position computed by mex over the whole tree equals the XOR of the two single-heap values.
 
@@ -53,6 +54,8 @@ I tested this on Dawson's Chess: the value of a two-heap position computed by me
 
 For Kayles the sources disagree between 70 and 71. My result of 71 agrees with the source that states 71.
 
+v2 matches all 1,001 OEIS terms for Dawson's Chess and all 105 for Kayles, and matches v1 on all five games.
+
 Plots are in `results/`, with the periodic region shaded green.
 
 ## What I did
@@ -60,10 +63,10 @@ Plots are in `results/`, with the periodic region shaded green.
 - **Validated:** Dawson's Chess and Kayles match their OEIS sequences. Nim gives G(n) = n. The XOR rule holds on my test cases. The detector finds the right period on both real games and on hand-made sequences.
 - **Dawson's Kayles is not independent.** The literature says Dawson's Kayles at size n+1 equals Dawson's Chess at size n. I computed it directly only to about n = 89, and it matched that rule term for term. The longer sequence in my tests is `[0] + dawsons_chess`, so its period comes from Dawson's Chess, not from a separate run.
 - **Treblecross is not validated.** I did not compare it to a published table. Its periodicity is a known open problem. Finding no period up to n = 100 does not show it is aperiodic. It only means I did not find one in that range.
-- **Largest heap computed from scratch:** n = 118 (Dawson's Chess). The last term in my stored Dawson's Chess sequence comes from the published values.
+- **Largest heap computed from scratch:** v1: n = 118 (Dawson's Chess). v2: n = 10,000. The last term in my stored v1 Dawson's Chess sequence comes from the published values.
 - **The detector is weak near the end of a sequence.** It only needs one repeat of data after the start. The false period at n = 64 came from that. A longer sequence is stronger evidence.
-- **Runtime.** Split-heavy games get expensive fast. Dawson's Chess took about an hour to reach n = 119 and one run used over 16 GB of RAM. Kayles took about three hours to reach about n = 95. A Dawson's Kayles run was taking about 1000 seconds per term by n = 109 when I stopped it. The tests use stored sequences, so they run in seconds.
-- **Next step:** use the XOR rule inside the recursion so each heap is solved on its own. This would be far faster and would let me compute Dawson’s Kayles directly and go much further on Treblecross.
+- **Runtime.** v1: Split-heavy games get expensive fast. Dawson's Chess took about an hour to reach n = 118 and one run used over 16 GB of RAM. Kayles took about three hours to reach about n = 95. A Dawson's Kayles run was taking about 1000 seconds per term by n = 109 when I stopped it. The tests use stored sequences, so they run in seconds. v2: reaches n = 10,000 in a few seconds using the XOR rule.
+- **Next step:** prove the periods of Dawson's Chess and Kayles using the Guy-Smith periodicity theorem.
 
 ## Running it
 
